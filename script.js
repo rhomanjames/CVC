@@ -3,14 +3,31 @@ const words = [
     'rat', 'net', 'sun', 'mud', 'jam', 'cup', 'leg', 'box', 'zip', 'leg',
     'web', 'wig', 'leg', 'mud', 'hut', 'bun', 'gum', 'sit', 'pig', 'pot',
     'cut', 'hat', 'nap', 'bug', 'lap', 'job', 'run', 'dot', 'fan', 'pat',
-    'box', 'sky', 'cup', 'dot', 'kit', 'win', 'nut', 'hot', 'lot', 'top'
+    'box', 'sky', 'cup', 'dot', 'kit', 'win', 'nut', 'hot', 'lot', 'top',
+    'bad', 'bed', 'big', 'box', 'bug', 'bus', 'cap', 'cop', 'dim', 'dot',
+    'dug', 'fed', 'fin', 'fox', 'fun', 'gas', 'get', 'hop', 'jam', 'jet',
+    'lap', 'log', 'mat', 'mix', 'mud', 'net', 'pad', 'pan', 'pit', 'pot',
+    'rib', 'rod', 'run', 'sad', 'sap', 'sit', 'tag', 'tan', 'tap', 'ton',
+    'van', 'vet', 'wag', 'wet', 'wig', 'zip'
 ];
 
 const letters = document.querySelectorAll('.letter');
 const wordContainer = document.getElementById('word-container');
 const audioPlayer = document.getElementById('audio-player');
+const playPauseButton = document.getElementById('play-pause-button');
 const confettiColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF'];
 const bgColors = ['#FFDDC1', '#C1E4FF', '#C1FFD4', '#FFB6C1', '#D5B6FF'];
+
+// Playlist of songs
+const playlist = [
+    'song1.mp3',
+    'song2.mp3',
+    'song3.mp3',
+    'song4.mp3',
+    'song5.mp3'
+];
+
+let currentSongIndex = 0;
 
 function getRandomWord() {
     return words[Math.floor(Math.random() * words.length)];
@@ -23,7 +40,13 @@ function displayWord(word) {
 }
 
 function highlightLetter(index) {
-    letters.forEach((letter, i) => letter.classList.toggle('highlight', i === index));
+    letters.forEach((letter, i) => {
+        letter.classList.toggle('highlight', i === index);
+    });
+}
+
+function removeUnderlineFromAllLetters() {
+    letters.forEach(letter => letter.classList.remove('highlight'));
 }
 
 function changeBackgroundColor() {
@@ -46,21 +69,20 @@ function startAnimation() {
         index = (index + 1) % 3;
 
         if (index === 0) {
-            // After the third letter, highlight all letters
+            // After the third letter, remove the underline from all letters and perform confetti animation
             setTimeout(() => {
-                letters.forEach(letter => letter.classList.add('highlight'));
+                removeUnderlineFromAllLetters();
                 changeBackgroundColor(); // Change background color for confetti effect
                 createConfetti();
                 setTimeout(() => {
                     letters.forEach(letter => letter.classList.remove('highlight')); // Remove highlight from all letters
-                    wordContainer.style.color = 'black'; // Reset color to black
                     setTimeout(() => {
                         startAnimation(); // Start over with a new word
                     }, 4000); // Wait 4 seconds before restarting
                 }, 1000); // Hold the word displayed for 1 second
-            }, 1000); // Hold the third letter for 1 second
+            }, 2000); // Hold the third letter for 2 seconds
         } else {
-            setTimeout(animateLetter, 1000); // Continue to the next letter
+            setTimeout(animateLetter, 2000); // Continue to the next letter with 2 seconds interval
         }
     }
 
@@ -84,5 +106,23 @@ function createConfetti() {
         setTimeout(() => confetti.remove(), 1000); // Remove confetti after 1 second
     }
 }
+
+function playNextSong() {
+    currentSongIndex = (currentSongIndex + 1) % playlist.length;
+    audioPlayer.src = playlist[currentSongIndex];
+    audioPlayer.play();
+}
+
+audioPlayer.addEventListener('ended', playNextSong);
+
+playPauseButton.addEventListener('click', () => {
+    if (audioPlayer.paused) {
+        audioPlayer.play();
+        playPauseButton.textContent = 'Pause';
+    } else {
+        audioPlayer.pause();
+        playPauseButton.textContent = 'Play';
+    }
+});
 
 startAnimation();
