@@ -1,0 +1,46 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    overflow: hidden;
+    position: relative;
+}
+
+#word-container {
+    font-size: 12rem; /* Larger font size */
+    font-weight: bold;
+    text-align: center;
+}
+
+.letter {
+    display: inline-block;
+    transition: color 1s;
+}
+
+.highlight {
+    color: red;
+}
+
+#audio-player {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    z-index: 100;
+}
+
+.confetti {
+    position: absolute;
+    border-radius: 50%;
+    background-color: #ff0;
+    opacity: 0.8;
+    animation: confetti-fall linear;
+}
+
+@keyframes confetti-fall {
+    0% { transform: translateY(0) rotate(0); }
+    100% { transform: translateY(100vh) rotate(360deg); }
+}
