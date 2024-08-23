@@ -20,11 +20,11 @@ const bgColors = ['#FFDDC1', '#C1E4FF', '#C1FFD4', '#FFB6C1', '#D5B6FF'];
 
 // Playlist of songs
 const playlist = [
-    'song1.mp3',
-    'song2.mp3',
-    'song3.mp3',
-    'song4.mp3',
-    'song5.mp3'
+    'https://res.cloudinary.com/usamobileappsllc/video/upload/v1724411674/cvev11kwzjeyjn3snjxl.mp3',
+    'https://res.cloudinary.com/usamobileappsllc/video/upload/v1641625210/toy-box-mountaineer-main-version-03-02-8474_zed4to.mp3',
+    'https://res.cloudinary.com/usamobileappsllc/video/upload/v1641625505/vivid-sensho-main-version-01-46-8518_ixz7cn.mp3',
+    'https://res.cloudinary.com/usamobileappsllc/video/upload/v1641625319/dill-bosnow-main-version-03-27-7339_nn4d0j.mp3',
+    'https://res.cloudinary.com/usamobileappsllc/video/upload/v1641625818/flamingo-kidcut-main-version-02-38-3185_hvcbt2.mp3'
 ];
 
 let currentSongIndex = 0;
@@ -40,13 +40,7 @@ function displayWord(word) {
 }
 
 function highlightLetter(index) {
-    letters.forEach((letter, i) => {
-        letter.classList.toggle('highlight', i === index);
-    });
-}
-
-function removeUnderlineFromAllLetters() {
-    letters.forEach(letter => letter.classList.remove('highlight'));
+    letters.forEach((letter, i) => letter.classList.toggle('highlight', i === index));
 }
 
 function changeBackgroundColor() {
@@ -69,20 +63,21 @@ function startAnimation() {
         index = (index + 1) % 3;
 
         if (index === 0) {
-            // After the third letter, remove the underline from all letters and perform confetti animation
+            // After the third letter, highlight all letters
             setTimeout(() => {
-                removeUnderlineFromAllLetters();
+                letters.forEach(letter => letter.classList.add('highlight'));
                 changeBackgroundColor(); // Change background color for confetti effect
                 createConfetti();
                 setTimeout(() => {
                     letters.forEach(letter => letter.classList.remove('highlight')); // Remove highlight from all letters
+                    wordContainer.style.color = 'black'; // Reset color to black
                     setTimeout(() => {
                         startAnimation(); // Start over with a new word
                     }, 4000); // Wait 4 seconds before restarting
                 }, 1000); // Hold the word displayed for 1 second
-            }, 2000); // Hold the third letter for 2 seconds
+            }, 2000); // Hold the third letter for 1 second
         } else {
-            setTimeout(animateLetter, 2000); // Continue to the next letter with 2 seconds interval
+            setTimeout(animateLetter, 2000); // Continue to the next letter
         }
     }
 
